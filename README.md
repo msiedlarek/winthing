@@ -11,13 +11,7 @@ through MQTT. For home automation and Internet of Things.
 
 ## Running
 
-    java -jar -Dwinthing.brokerUrl=tcp://localhost:1883 \
-        target/winthing-1.0.0-SNAPSHOT.jar
-
-## Supported messages
-
-The payload of all messages is either empty or a valid JSON element
-(possibly a privimite, like a single integer).
+    java -jar -Dwinthing.brokerUrl=tcp://localhost:1883 target/winthing-1.0.0-SNAPSHOT.jar
 
 ## Configuration
 
@@ -30,6 +24,11 @@ Configuration can be passed either by Java system properties from command line o
 <tr><td> winthing.topicPrefix </td><td> Client ID to present to the broker. </td><td> winthing </td></tr>
 <tr><td> winthing.reconnectInterval </td><td> Time interval between connection attempts in seconds. </td><td> 5 </td></tr>
 </table>
+
+## Supported messages
+
+The payload of all messages is either empty or a valid JSON element
+(possibly a privimite, like a single integer).
 
 ### Broadcasted status
 
