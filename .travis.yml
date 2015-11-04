@@ -1,7 +1,6 @@
 language: java
 jdk: oraclejdk8
 script:
-  - mvn package
   - mvn checkstyle:check
   - mvn pmd:check
   - mvn findbugs:check
