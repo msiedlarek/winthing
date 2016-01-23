@@ -11,7 +11,7 @@ through MQTT. For home automation and Internet of Things.
 
 ## Running
 
-    java -jar -Dwinthing.brokerUrl=tcp://localhost:1883 target/winthing-1.0.0-SNAPSHOT.jar
+    java -jar -Dwinthing.brokerUrl=tcp://localhost:1883 target/winthing-1.1.0-SNAPSHOT.jar
 
 ## Configuration
 
@@ -20,6 +20,8 @@ Configuration can be passed either by Java system properties from command line o
 <table>
 <tr><th>Property</th><th>Description</th><th>Default</th>
 <tr><td> winthing.brokerUrl </td><td> URL of the MQTT broker to use. </td><td> tcp://localhost:1883 </td></tr>
+<tr><td> winthing.brokerUsername </td><td> Username used when connecting to MQTT broker. </td><td> bob </td></tr>
+<tr><td> winthing.brokerPassword </td><td> Password used when connecting to MQTT broker. </td><td> supersecret11 </td></tr>
 <tr><td> winthing.clientId </td><td> Client ID to present to the broker. </td><td> WinThing </td></tr>
 <tr><td> winthing.topicPrefix </td><td> Client ID to present to the broker. </td><td> winthing </td></tr>
 <tr><td> winthing.reconnectInterval </td><td> Time interval between connection attempts in seconds. </td><td> 5 </td></tr>

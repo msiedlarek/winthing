@@ -65,6 +65,19 @@ public class Engine implements MqttCallback, MessagePublisher {
         );
         this.client.setCallback(this);
 
+        {
+            final String username = config.getString(Settings.BROKER_USERNAME);
+            if (username != null && !username.isEmpty()) {
+                this.options.setUserName(username);
+            }
+        }
+        {
+            final String password = config.getString(Settings.BROKER_PASSWORD);
+            if (password != null && !password.isEmpty()) {
+                this.options.setPassword(password.toCharArray());
+            }
+        }
+
         this.options.setCleanSession(true);
     }
 
