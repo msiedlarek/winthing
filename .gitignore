@@ -1,4 +1,6 @@
 /target
+/pom.xml.releaseBackup
+/release.properties
 *.iml
 .idea
 .DS_Store
