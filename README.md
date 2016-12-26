@@ -29,8 +29,17 @@ Configuration can be passed either by Java system properties from command line o
 
 ## Supported messages
 
-The payload of all messages is either empty or a valid JSON element
-(possibly a privimite, like a single integer).
+The payload of all messages is either empty or a valid JSON element (possibly
+a privimite, like a single integer). This means, specifically, that if an
+argument is supposed to be a single string, it should be sent in double quotes.
+
+Example valid message payloads:
+
+* `123`
+* `true`
+* `"notepad.exe"`
+* `[1024, 768]`
+* `["notepad.exe", "C:\file.txt", "C:\"]`
 
 ### Broadcasted status
 

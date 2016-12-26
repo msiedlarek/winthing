@@ -5,6 +5,7 @@ import com.fatico.winthing.Settings;
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
@@ -178,7 +179,25 @@ public class Engine implements MqttCallback, MessagePublisher {
     }
 
     @Override
-    public void messageArrived(String topic, final MqttMessage mqttMessage) throws Exception {
+    public void messageArrived(final String topic, final MqttMessage mqttMessage) throws Exception {
+        try {
+            handleMessage(topic, mqttMessage);
+        } catch (final Throwable throwable) {
+            logger.error(
+                    "Error while handling message " + topic
+                            + "(" + new String(mqttMessage.getPayload(), CHARSET) + "): "
+                            + throwable.getMessage(),
+                    throwable
+            );
+        }
+    }
+
+    @Override
+    public void deliveryComplete(final IMqttDeliveryToken token) {
+        // Do nothing.
+    }
+
+    private void handleMessage(String topic, final MqttMessage mqttMessage) throws Exception {
         if (!topic.startsWith(topicPrefix)) {
             return;
         }
@@ -194,20 +213,25 @@ public class Engine implements MqttCallback, MessagePublisher {
         if (payloadBytes.length == 0) {
             payload = null;
         } else {
-            payload = gson.fromJson(new String(payloadBytes, CHARSET), JsonElement.class);
+            try {
+                payload = gson.fromJson(new String(payloadBytes, CHARSET), JsonElement.class);
+            } catch (final JsonSyntaxException exception) {
+                logger.error("Invalid JSON received for: {}", topic);
+                return;
+            }
         }
 
         final Message message = new Message(
-            topic,
-            payload,
-            QualityOfService.values()[mqttMessage.getQos()],
-            mqttMessage.isRetained()
+                topic,
+                payload,
+                QualityOfService.values()[mqttMessage.getQos()],
+                mqttMessage.isRetained()
         );
 
         logger.debug(
-            "Received: {}({})",
-            message.getTopic(),
-            message.getPayload().isPresent() ? message.getPayload().get().toString() : ""
+                "Received: {}({})",
+                message.getTopic(),
+                message.getPayload().isPresent() ? message.getPayload().get().toString() : ""
         );
 
         for (final Consumer<Message> consumer : consumers) {
@@ -215,18 +239,14 @@ public class Engine implements MqttCallback, MessagePublisher {
                 consumer.accept(message);
             } catch (final Exception exception) {
                 logger.error(
-                    "Error while processing {}({}): {}",
-                    message.getTopic(),
-                    message.getPayload().isPresent() ? message.getPayload().get().toString() : "",
-                    exception.getMessage()
+                        "Error while processing {}({}): {}",
+                        message.getTopic(),
+                        message.getPayload().isPresent()
+                                ? message.getPayload().get().toString() : "",
+                        exception.getMessage()
                 );
             }
         }
-    }
-
-    @Override
-    public void deliveryComplete(final IMqttDeliveryToken token) {
-        // Do nothing.
     }
 
     private MqttMessage serialize(final Message message) {
