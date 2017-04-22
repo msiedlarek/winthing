@@ -14,17 +14,6 @@ public interface User32 extends com.sun.jna.platform.win32.User32 {
         W32APIOptions.DEFAULT_OPTIONS
     );
 
-    int EWX_SHUTDOWN = 0x00000001;
-    int EWX_REBOOT = 0x00000002;
-
-    int EWX_FORCEIFHUNG = 0x00000010;
-
-    int SHTDN_REASON_MAJOR_OTHER = 0x00000000;
-    int SHTDN_REASON_MINOR_OTHER = 0x00000000;
-    int SHTDN_REASON_FLAG_PLANNED = 0x80000000;
-
     LRESULT SendMessage(HWND hWnd, int Msg, WPARAM wParam, LPARAM lParam);
-
-    boolean ExitWindowsEx(int uFlags, DWORD dwReason);
 
 }

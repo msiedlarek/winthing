@@ -40,7 +40,7 @@ public interface AtiAdl extends Library {
         public int iDisplayPhysicalAdapterIndex;
 
         @Override
-        protected List getFieldOrder() {
+        protected List<String> getFieldOrder() {
             return ImmutableList.of(
                 "iDisplayLogicalIndex",
                 "iDisplayPhysicalIndex",
@@ -69,7 +69,7 @@ public interface AtiAdl extends Library {
         }
 
         @Override
-        protected List getFieldOrder() {
+        protected List<String> getFieldOrder() {
             return ImmutableList.of(
                 "iAdapterIndex",
                 "displayID",

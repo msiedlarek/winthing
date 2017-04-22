@@ -1,11 +1,11 @@
 package com.fatico.winthing.systems.system;
 
 import com.fatico.winthing.windows.SystemException;
+import com.fatico.winthing.windows.jna.Advapi32;
 import com.fatico.winthing.windows.jna.User32;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.sun.jna.platform.win32.Advapi32;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Kernel32Util;
 import com.sun.jna.platform.win32.Shell32;
@@ -41,13 +41,12 @@ public class SystemService {
     }
 
     public void shutdown() throws SystemException {
-        final boolean success = user32.ExitWindowsEx(
-            User32.EWX_SHUTDOWN | User32.EWX_FORCEIFHUNG,
-            new WinDef.DWORD(
-                User32.SHTDN_REASON_MAJOR_OTHER
-                    | User32.SHTDN_REASON_MINOR_OTHER
-                    | User32.SHTDN_REASON_FLAG_PLANNED
-            )
+        final boolean success = advapi32.InitiateSystemShutdown(
+            null,
+            null,
+            new WinDef.DWORD(0),
+            true,
+            false
         );
         if (!success) {
             throw new SystemException(Kernel32Util.formatMessage(kernel32.GetLastError()));
@@ -55,13 +54,12 @@ public class SystemService {
     }
 
     public void reboot() throws SystemException {
-        final boolean success = user32.ExitWindowsEx(
-            User32.EWX_REBOOT | User32.EWX_FORCEIFHUNG,
-            new WinDef.DWORD(
-                User32.SHTDN_REASON_MAJOR_OTHER
-                    | User32.SHTDN_REASON_MINOR_OTHER
-                    | User32.SHTDN_REASON_FLAG_PLANNED
-            )
+        final boolean success = advapi32.InitiateSystemShutdown(
+            null,
+            null,
+            new WinDef.DWORD(0),
+            true,
+            true
         );
         if (!success) {
             throw new SystemException(Kernel32Util.formatMessage(kernel32.GetLastError()));
