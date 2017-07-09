@@ -2,10 +2,10 @@ package com.fatico.winthing.systems.system;
 
 import com.fatico.winthing.windows.SystemException;
 import com.fatico.winthing.windows.jna.Advapi32;
+import com.fatico.winthing.windows.jna.Kernel32;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Shell32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinNT;
@@ -58,6 +58,26 @@ public class SystemService {
             true,
             true
         );
+        if (!success) {
+            throw new SystemException(Kernel32Util.formatMessage(kernel32.GetLastError()));
+        }
+    }
+    
+    public void suspend() throws SystemException {
+        final boolean success = kernel32.SetSystemPowerState(
+            true,
+            false
+        );
+        if (!success) {
+            throw new SystemException(Kernel32Util.formatMessage(kernel32.GetLastError()));
+        }
+    }
+
+    public void hibernate() throws SystemException {
+        final boolean success = kernel32.SetSystemPowerState(
+                false,
+                false
+            );
         if (!success) {
             throw new SystemException(Kernel32Util.formatMessage(kernel32.GetLastError()));
         }

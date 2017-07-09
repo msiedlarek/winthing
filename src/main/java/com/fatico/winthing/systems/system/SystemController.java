@@ -39,6 +39,8 @@ public class SystemController extends BaseController {
             )
         );
         registry.subscribe(prefix + "commands/shutdown", this::shutdown);
+        registry.subscribe(prefix + "commands/suspend", this::suspend);
+        registry.subscribe(prefix + "commands/hibernate", this::hibernate);
         registry.subscribe(prefix + "commands/reboot", this::reboot);
         registry.subscribe(prefix + "commands/run", this::run);
         registry.subscribe(prefix + "commands/open", this::open);
@@ -50,6 +52,14 @@ public class SystemController extends BaseController {
 
     void reboot(final Message message) {
         systemService.reboot();
+    }
+    
+    public void suspend(final Message message) {
+        systemService.suspend();
+    }
+
+    public void hibernate(final Message message) {
+        systemService.hibernate();
     }
 
     public void run(final Message message) {

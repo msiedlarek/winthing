@@ -76,6 +76,22 @@ Example valid message payloads:
 </td></tr></table>
 
 <table><tr>
+  <th>Topic:</th><td> winthing/system/commands/suspend </td>
+</tr><tr>
+  <th>Payload:</th><td>-</td>
+</tr><tr><td colspan="2">
+  Trigger immediate system suspend.
+</td></tr></table>
+
+<table><tr>
+  <th>Topic:</th><td> winthing/system/commands/hibernate </td>
+</tr><tr>
+  <th>Payload:</th><td>-</td>
+</tr><tr><td colspan="2">
+  Trigger immediate system hibernate.
+</td></tr></table>
+
+<table><tr>
   <th>Topic:</th><td> winthing/system/commands/run </td>
 </tr><tr>
   <th>Payload:</th><td>[command:string, arguments:string, workingDirectory:string]</td>
