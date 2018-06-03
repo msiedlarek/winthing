@@ -39,7 +39,7 @@ Example valid message payloads:
 * `true`
 * `"notepad.exe"`
 * `[1024, 768]`
-* `["notepad.exe", "C:\file.txt", "C:\"]`
+* `["notepad.exe", "C:\\file.txt", "C:\\"]` (note that JSON string requires escaped backslash)
 
 ### Broadcasted status
 
