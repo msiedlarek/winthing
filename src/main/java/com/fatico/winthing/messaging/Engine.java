@@ -1,7 +1,7 @@
 package com.fatico.winthing.messaging;
 
 import com.fatico.winthing.Settings;
-
+import com.fatico.winthing.gui.WindowGUI;
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -60,7 +60,7 @@ public class Engine implements MqttCallback, MessagePublisher {
         this.registry = Objects.requireNonNull(registry);
 
         this.client = new MqttAsyncClient(
-            config.getString(Settings.BROKER_URL),
+            "tcp://" + config.getString(Settings.BROKER_URL),
             config.getString(Settings.CLIENT_ID),
             persistence
         );
@@ -148,9 +148,15 @@ public class Engine implements MqttCallback, MessagePublisher {
         registry.getInitialMessages().stream().forEach(this::publish);
 
         logger.info("Engine started.");
+        
+        WindowGUI gui = WindowGUI.getInstance();
+        gui.setIcon(true);
     }
 
     private void disconnect() throws MqttException {
+    	WindowGUI gui = WindowGUI.getInstance();
+        gui.setIcon(false);
+        
         client.disconnect();
     }
 
@@ -169,6 +175,9 @@ public class Engine implements MqttCallback, MessagePublisher {
 
     @Override
     public void connectionLost(final Throwable throwable) {
+    	WindowGUI gui = WindowGUI.getInstance();
+        gui.setIcon(false);
+    	
         logger.error("Connection lost.");
         runnningLock.lock();
         try {
