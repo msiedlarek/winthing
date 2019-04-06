@@ -45,18 +45,10 @@ public class SystemController extends BaseController {
         registry.subscribe(prefix + "commands/hibernate", this::hibernate);
         registry.subscribe(prefix + "commands/reboot", this::reboot);
         registry.subscribe(prefix + "commands/open", this::open);
+        registry.subscribe(prefix + "commands/run", this::run);
         
         systemCommander = new SystemCommander();
-        systemCommander.parseConfig();
-        
-        if (systemCommander.isEnabled()) {
-        	for (String command : systemCommander.getList()) {
-        		registry.subscribe(prefix + "commands/run/" + command, this::execute);	
-        	}
-        }
-        else {
-        	registry.subscribe(prefix + "commands/run", this::run);
-        }
+        systemCommander.parseConfig();        
     }
 
     public void shutdown(final Message message) {
@@ -79,34 +71,29 @@ public class SystemController extends BaseController {
         final String command;
         final String parameters;
         final String workingDirectory;
+        
         try {
             final JsonArray arguments = message.getPayload().get().getAsJsonArray();
             command = arguments.get(0).getAsString();
             parameters = (arguments.size() > 1 ? arguments.get(1).getAsString() : "");
-            workingDirectory = (arguments.size() > 2 ? arguments.get(2).getAsString() : null);
+            workingDirectory = (arguments.size() > 2 ? arguments.get(2).getAsString() : null);            
         } catch (final NoSuchElementException | IllegalStateException exception) {
             throw new IllegalArgumentException("Invalid arguments.");
         }
+        
+        if (systemCommander.isEnabled()) {
+        	String cmd = systemCommander.getCommand(command);
+        	if (cmd == null) {
+        		throw new SystemException("Invalid command: " + command);
+        	}
+        	
+        	File fp = new File(cmd);
+        	if (!fp.exists()) {
+        		throw new SystemException("File not found: " + cmd);
+        	}
+        }
+        
         systemService.run(command, parameters, workingDirectory);
-    }
-    
-    public void execute(final Message message) {
-   		String[] topics = message.getTopic().split("/");
-   		if (topics.length > 0) {
-   			String topic = topics[topics.length - 1];
-   			for (String command : systemCommander.getList()) {
-   				if (command.equals(topic)) {
-   					String cmd = systemCommander.getCommand(topic);
-   					File fp = new File(cmd);
-   					if (fp.exists()) {   					
-   						systemService.run(systemCommander.getCommand(topic), "", null);
-   					}
-   					else {
-   						throw new SystemException("Could not run command: " + cmd);
-   					}
-   				}
-   			}
-   		}
     }
 
     public void open(final Message message) {
