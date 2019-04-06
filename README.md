@@ -1,37 +1,74 @@
 # WinThing
 
-[![Build Status](https://travis-ci.org/msiedlarek/winthing.svg?branch=master)](https://travis-ci.org/msiedlarek/winthing)
+A modular background service that makes Windows remotely controllable through MQTT. For home automation and Internet of Things.
 
-A modular background service that makes Windows remotely controllable
-through MQTT. For home automation and Internet of Things.
+## Requirements
+
+Java Runtime Environment 8 (JRE) is required on your local machine. Java 10 should be working. Other Java versions untested.<br>
 
 ## Compilation
+
+Maven is required to build Java application. For convenience the Maven build file contains execution to produce a Windows executable.  
 
     mvn clean package
 
 ## Running
 
-    java -jar -Dwinthing.brokerUrl=tcp://localhost:1883 target/winthing-1.1.0-SNAPSHOT.jar
+Download the Windows executable and run it: 
+
+	winthing.exe
+	
+or you can execute the Java file:
+
+    java -jar winthing-<version>.jar
 
 ## Configuration
 
-Configuration can be passed either by Java system properties from command line or application.properties file placed in the classpath.
+Configuration parameters can be passed from command line or they can be placed in configuration files in the working directory from where you launch WinThing.
 
 <table>
 <tr><th>Property</th><th>Description</th><th>Default</th>
-<tr><td> winthing.brokerUrl </td><td> URL of the MQTT broker to use. </td><td> tcp://localhost:1883 </td></tr>
-<tr><td> winthing.brokerUsername </td><td> Username used when connecting to MQTT broker. </td><td> bob </td></tr>
-<tr><td> winthing.brokerPassword </td><td> Password used when connecting to MQTT broker. </td><td> supersecret11 </td></tr>
-<tr><td> winthing.clientId </td><td> Client ID to present to the broker. </td><td> WinThing </td></tr>
-<tr><td> winthing.topicPrefix </td><td> Client ID to present to the broker. </td><td> winthing </td></tr>
-<tr><td> winthing.reconnectInterval </td><td> Time interval between connection attempts in seconds. </td><td> 5 </td></tr>
+<tr><td>broker</td><td>URL of the MQTT broker to use</td><td>127.0.0.1:1883</td></tr>
+<tr><td>username</td><td>Username used when connecting to MQTT broker</td><td>mqtt</td></tr>
+<tr><td>password</td><td>Password used when connecting to MQTT broker</td><td>mqtt</td></tr>
+<tr><td>clientid</td><td>Client ID to present to the broker</td><td>WinThing</td></tr>
+<tr><td>reconnect</td><td>Time interval between connection attempts in seconds</td><td>5</td></tr>
 </table>
+
+### Command line parameters
+
+Example how to pass parameters from command line:
+
+	java -Dbroker="127.0.0.1:1883" -jar winthing-1.2.0.jar
+
+### winthing.conf
+
+WinThing will look for this file in the current working directory (directory from where you launched WinThing). Create this file and put desired parameters into it.
+
+Example file:
+
+	broker = "127.0.0.1:1883"
+	username = "mqtt"
+	password = "somesecret"
+	
+### winthing.ini
+
+By default WinThing executes any command it receives in the system/commands/run topic. Create this file in the current working directory to whitelist only specific commands. The file contains an unique string identifier (used as payload in the MQTT message, see below) and path to executable.
+
+Example file:
+
+	notepad = "c:\windows\system32\notepad.exe"
+	adobe = "c:\program files\adobe\reader.exe"
+	
+## Logging
+
+You can open application log by clicking on the tray icon. To log into **winthing.log** file in the current working directory run WinThing with the **-debug** parameter.
+
+	winthing.exe -debug
 
 ## Supported messages
 
-The payload of all messages is either empty or a valid JSON element (possibly
-a privimite, like a single integer). This means, specifically, that if an
-argument is supposed to be a single string, it should be sent in double quotes.
+The payload of all messages is either empty or a valid JSON element (possibly a primitive, like a single integer). This means, specifically, that if an argument is supposed to be a single string, it should be sent in double quotes.
 
 Example valid message payloads:
 
@@ -41,119 +78,93 @@ Example valid message payloads:
 * `[1024, 768]`
 * `["notepad.exe", "C:\\file.txt", "C:\\"]` (note that JSON string requires escaped backslash)
 
-### Broadcasted status
+### Broadcast status
 
 #### System
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/online </td>
-  <th>QoS:</th><td> 2 </td>
-  <th>Persistent:</th><td> yes </td>
-</tr><tr>
-  <th>Payload:</th><td colspan="5"> state:boolean </td>
-</tr><tr><td colspan="6">
-  True when WinThing is running, false otherwise.
-</td></tr></table>
+**Topic:** winthing/system/online **Payload:** state:boolean<br>
+**QoS:** 2<br>
+ **Persistent:** yes<br>
+True when WinThing is running, false otherwise. WinThing registers a "last will" message with the broker to notify clients when WinThing disconnects.
 
 ### Commands
 
 #### System
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/commands/shutdown </td>
-</tr><tr>
-  <th>Payload:</th><td>-</td>
-</tr><tr><td colspan="2">
-  Trigger immediate system shutdown.
-</td></tr></table>
+**Topic:** winthing/system/commands/shutdown<br>
+**Payload:** -
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/commands/reboot </td>
-</tr><tr>
-  <th>Payload:</th><td>-</td>
-</tr><tr><td colspan="2">
-  Trigger immediate system reboot.
-</td></tr></table>
+Trigger immediate system shutdown.
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/commands/suspend </td>
-</tr><tr>
-  <th>Payload:</th><td>-</td>
-</tr><tr><td colspan="2">
-  Trigger immediate system suspend.
-</td></tr></table>
+---
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/commands/hibernate </td>
-</tr><tr>
-  <th>Payload:</th><td>-</td>
-</tr><tr><td colspan="2">
-  Trigger immediate system hibernate.
-</td></tr></table>
+**Topic:** winthing/system/commands/reboot<br>
+**Payload:** -
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/commands/run </td>
-</tr><tr>
-  <th>Payload:</th><td>[command:string, arguments:string, workingDirectory:string]</td>
-</tr><tr><td colspan="2">
-  Run a command. Arguments and working directory are optional (empty string and null by default).
-</td></tr></table>
+Trigger immediate system reboot.
 
-<table><tr>
-  <th>Topic:</th><td> winthing/system/commands/open </td>
-</tr><tr>
-  <th>Payload:</th><td>uri:string</td>
-</tr><tr><td colspan="2">
-  Opens an URI, like a website in a browser or a disk location in a file browser.
-</td></tr></table>
+---
+
+**Topic:** winthing/system/commands/suspend<br>
+**Payload:** -
+
+Trigger immediate system suspend.
+
+---
+
+**Topic:** winthing/system/commands/hibernate<br> 
+**Payload:** -
+
+Trigger immediate system hibernate.
+
+---
+
+**Topic:** winthing/system/commands/run<br>
+**Payload:** [command:string, arguments:string, workingDirectory:string]
+
+Run a command. Arguments and working directory are optional (empty string and null by default). If whitelist is enabled, only the command as unique identifier is required. The identifier is checked against the whitelist file.
+
+---
+
+**Topic:** winthing/system/commands/open<br>
+**Payload:** uri:string
+
+Opens an URI, like a website in a browser or a disk location in a file browser.
 
 #### Desktop
 
-<table><tr>
-  <th>Topic:</th><td> winthing/desktop/commands/close_active_window </td>
-</tr><tr>
-  <th>Payload:</th><td>-</td>
-</tr><tr><td colspan="2">
-  Closes currently active window.
-</td></tr></table>
+**Topic:** winthing/desktop/commands/close_active_window<br>
+**Payload:** -
 
-<table><tr>
-  <th>Topic:</th><td> winthing/desktop/commands/set_display_sleep </td>
-</tr><tr>
-  <th>Payload:</th><td>displaySleep:boolean</td>
-</tr><tr><td colspan="2">
-  Puts the display to sleep (on true) or wakes it up (on false).
-</td></tr></table>
+Closes currently active window.
+
+---
+
+**Topic:** winthing/desktop/commands/set_display_sleep<br>
+**Payload:** displaySleep:boolean
+
+Puts the display to sleep (on true) or wakes it up (on false).
 
 #### Keyboard
 
-<table><tr>
-  <th>Topic:</th><td> winthing/keyboard/commands/press_keys </td>
-</tr><tr>
-  <th>Payload:</th><td>[key:string...]</td>
-</tr><tr><td colspan="2">
-  Simulates pressing of given set of keyboard keys. Keys are specified by name.
-  List of availble key names and aliases can be found
-  [here](src/main/java/com/fatico/winthing/windows/input/KeyboardKey.java).
-</td></tr></table>
+**Topic:** winthing/keyboard/commands/press_keys<br>
+**Payload:** [key:string...]
+
+Simulates pressing of given set of keyboard keys. Keys are specified by name. List of available key names and aliases can be found [here](src/main/java/com/fatico/winthing/windows/input/KeyboardKey.java).
 
 #### ATI Radeon display driver
 
-<table><tr>
-  <th>Topic:</th><td> winthing/radeon/commands/set_best_resolution </td>
-</tr><tr>
-  <th>Payload:</th><td>-</td>
-</tr><tr><td colspan="2">
-  Sets the screen to the best available resolution.
-</td></tr></table>
+**Topic:** winthing/radeon/commands/set_best_resolution<br>
+**Payload:** -
 
-<table><tr>
-  <th>Topic:</th><td> winthing/radeon/commands/set_resolution </td>
-</tr><tr>
-  <th>Payload:</th><td>[widthInPixels:integer, heightInPixels:integer]</td>
-</tr><tr><td colspan="2">
-  Sets the screen to the given resolution.
-</td></tr></table>
+Sets the screen to the best available resolution.
+
+---
+
+**Topic:** winthing/radeon/commands/set_resolution<br>
+**Payload:** [widthInPixels:integer, heightInPixels:integer]
+
+Sets the screen to the given resolution.
 
 ## License
 
