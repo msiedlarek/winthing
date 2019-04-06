@@ -1,5 +1,7 @@
 package com.fatico.winthing;
 
+import java.io.File;
+
 import com.fatico.winthing.messaging.MessagingModule;
 import com.fatico.winthing.windows.WindowsModule;
 
@@ -9,9 +11,12 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigParseOptions;
+import com.typesafe.config.ConfigSyntax;
 
 public class ApplicationModule extends AbstractModule {
-
+	public static final String ConfigFile = "winthing.conf";
+	
     @Override
     protected void configure() {
         bind(Gson.class).in(Singleton.class);
@@ -27,7 +32,20 @@ public class ApplicationModule extends AbstractModule {
     @Provides
     @Singleton
     Config config() {
-        return ConfigFactory.load();
+    	Config cfg = ConfigFactory.load();
+    	
+    	String path = System.getProperty("user.dir") + File.separator + ConfigFile;
+    	
+    	System.out.println(path);
+    	
+    	File fp = new File(path);
+    	if (fp.exists()) {
+    		ConfigParseOptions options = ConfigParseOptions.defaults();
+    		options.setSyntax(ConfigSyntax.CONF);
+    		
+    		cfg = ConfigFactory.parseFile(fp).withFallback(cfg);
+    	}
+        
+        return cfg;
     }
-
 }
