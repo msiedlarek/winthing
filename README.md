@@ -82,9 +82,11 @@ Example valid message payloads:
 
 #### System
 
-**Topic:** winthing/system/online **Payload:** state:boolean<br>
+**Topic:** winthing/system/online<br>
+**Payload:** state:boolean<br>
 **QoS:** 2<br>
  **Persistent:** yes<br>
+ 
 True when WinThing is running, false otherwise. WinThing registers a "last will" message with the broker to notify clients when WinThing disconnects.
 
 ### Commands
