@@ -10,12 +10,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.google.inject.Inject;
 
+import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SystemController extends BaseController {
 
     private final SystemService systemService;
+    private final SystemCommander systemCommander;
 
     @Inject
     public SystemController(final Registry registry, final SystemService systemService)
@@ -42,8 +44,19 @@ public class SystemController extends BaseController {
         registry.subscribe(prefix + "commands/suspend", this::suspend);
         registry.subscribe(prefix + "commands/hibernate", this::hibernate);
         registry.subscribe(prefix + "commands/reboot", this::reboot);
-        registry.subscribe(prefix + "commands/run", this::run);
         registry.subscribe(prefix + "commands/open", this::open);
+        
+        systemCommander = new SystemCommander();
+        systemCommander.parseConfig();
+        
+        if (systemCommander.isEnabled()) {
+        	for (String command : systemCommander.getList()) {
+        		registry.subscribe(prefix + "commands/run/" + command, this::execute);	
+        	}
+        }
+        else {
+        	registry.subscribe(prefix + "commands/run", this::run);
+        }
     }
 
     public void shutdown(final Message message) {
@@ -75,6 +88,25 @@ public class SystemController extends BaseController {
             throw new IllegalArgumentException("Invalid arguments.");
         }
         systemService.run(command, parameters, workingDirectory);
+    }
+    
+    public void execute(final Message message) {
+   		String[] topics = message.getTopic().split("/");
+   		if (topics.length > 0) {
+   			String topic = topics[topics.length - 1];
+   			for (String command : systemCommander.getList()) {
+   				if (command.equals(topic)) {
+   					String cmd = systemCommander.getCommand(topic);
+   					File fp = new File(cmd);
+   					if (fp.exists()) {   					
+   						systemService.run(systemCommander.getCommand(topic), "", null);
+   					}
+   					else {
+   						throw new SystemException("Could not run command: " + cmd);
+   					}
+   				}
+   			}
+   		}
     }
 
     public void open(final Message message) {
