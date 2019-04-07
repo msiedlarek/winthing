@@ -1,5 +1,6 @@
 package com.fatico.winthing.logging;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -33,7 +34,7 @@ public class ConsoleLogger extends ConsoleAppender<ILoggingEvent> {
 		}
 		
 		byte[] data = encoder.encode(event);
-		events.add(new String(data));
+		events.add(new String(data, Charset.forName("UTF-8")));
 		
 		WindowGUI gui = WindowGUI.getInstance();
 		gui.reload();
