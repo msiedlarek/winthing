@@ -1,31 +1,30 @@
 <configuration>
-	<define name="FileLog" class="com.fatico.winthing.logging.FileLogEnabler"/>
-
+    <define name="FileLog" class="com.fatico.winthing.logging.FileLogEnabler"/>
+    
     <appender name="STDOUT" class="com.fatico.winthing.logging.ConsoleLogger">
-    	<encoder>
+        <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
     
     <if condition='property("FileLog").contains("true")'>
-	    <then>
-		    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		        <file>winthing.log</file>
-		        <append>false</append>
-		        <encoder>
-		            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-		        </encoder>
-		    </appender>
-		</then>
-	</if>
-	
+        <then>
+            <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+                <file>winthing.log</file>
+                <append>false</append>
+                <encoder>
+                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </then>
+    </if>
+    
     <root level="info">
         <appender-ref ref="STDOUT" />
         <if condition='property("FileLog").contains("true")'>
-        	<then>
-        		<appender-ref ref="FILE" />
-        	</then>
+            <then>
+                <appender-ref ref="FILE" />
+            </then>
         </if>
     </root>
-    
 </configuration>
