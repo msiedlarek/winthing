@@ -37,6 +37,7 @@ public class RadeonService {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void finalize() throws Throwable {
         atiAdl.ADL2_Main_Control_Destroy(context);
@@ -116,5 +117,4 @@ public class RadeonService {
             return new Pointer(Memory.malloc(size));
         }
     }
-
 }
