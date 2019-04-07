@@ -9,12 +9,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Application {
-	public static boolean APPDEBUG = false;
-    private static final Logger logger = LoggerFactory.getLogger(Application.class);
-
+	private boolean debug = false;
+	private static Application app = new Application();
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);    
+    
+    private void parseArgs(String[] args) {
+    	for (String arg : args) {
+    		if (arg.equals("-debug")) {
+    			debug = true;
+    		}
+    	}
+    }    
+    
+    public static boolean debug() {
+    	return app.debug;
+    }
+    
+    public static void quit() {
+    	logger.info("Application terminated.");
+    	System.exit(0);
+    }
+    
     public static void main(final String[] args) {
         try {
-        	parseArgs(args);
+        	app.parseArgs(args);
         	
         	WindowGUI gui = WindowGUI.getInstance();
         	gui.tray();
@@ -27,13 +45,5 @@ public class Application {
             logger.error("Critical error.", throwable);
             System.exit(1);
         }
-    }
-    
-    public static void parseArgs(String[] args) {
-    	for (String arg : args) {
-    		if (arg.equals("-debug")) {
-    			APPDEBUG = true;
-    		}
-    	}
     }
 }
