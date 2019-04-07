@@ -4,23 +4,26 @@ A modular background service that makes Windows remotely controllable through MQ
 
 ## Requirements
 
-Java Runtime Environment 8 (JRE) is required on your local machine. Java 10 should be working. Other Java versions untested.<br>
+Java SE 8 or Java SE 11 is required on your local machine. Other Java versions untested.<br>
 
 ## Compilation
 
 Maven is required to build Java application. For convenience the Maven build file contains execution to produce a Windows executable.  
 
     mvn clean package
+    mvn package
 
 ## Running
 
 Download the Windows executable and run it: 
 
-	winthing.exe
+	winthing-1.3.0.exe
 	
 or you can execute the Java file:
 
-    java -jar winthing-<version>.jar
+    java -jar winthing-1.3.0.jar
+    
+*1.3.0 represents the application version and is changing with each update. Feel free to rename the file to winthing.exe to keep the same name.*
 
 ## Configuration
 
@@ -57,8 +60,10 @@ By default WinThing executes any command it receives in the system/commands/run 
 
 Example file:
 
-	notepad = "c:\windows\system32\notepad.exe"
-	adobe = "c:\program files\adobe\reader.exe"
+	notepad = "c:/windows/system32/notepad.exe"
+	adobe = "c:\\program files\\adobe\\reader.exe"
+	
+*Note you can use slash* ' / ' *or double backslash* ' \\\\ ' *as path separator.*
 	
 ## Logging
 
