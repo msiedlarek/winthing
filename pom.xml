@@ -183,10 +183,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <release>11</release>
                     <compilerArgs>
                         <arg>-Xlint</arg>
                         <arg>-Werror</arg>
@@ -196,7 +197,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -252,7 +253,7 @@
                             <jre>
                                 <bundledJre64Bit>false</bundledJre64Bit>
                                 <bundledJreAsFallback>false</bundledJreAsFallback>
-                                <minVersion>1.8.0</minVersion>
+                                <minVersion>1.8</minVersion>
                                 <jdkPreference>jreOnly</jdkPreference>
                                 <runtimeBits>64</runtimeBits>
                             </jre>
