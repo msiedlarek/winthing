@@ -8,7 +8,7 @@ public class FileLogEnabler extends PropertyDefinerBase {
 
 	@Override
 	public String getPropertyValue() {
-		if (Application.APPDEBUG) {
+		if (Application.debug()) {
 			return "true";
 		}
 		
