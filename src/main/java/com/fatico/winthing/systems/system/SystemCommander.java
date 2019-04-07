@@ -14,6 +14,8 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
 import com.typesafe.config.ConfigSyntax;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class SystemCommander {
 	public static final String ConfigFile = "winthing.ini";
 	
@@ -44,6 +46,7 @@ public class SystemCommander {
 		return whitelist.size();
 	}
 
+	@SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
 	public void parseConfig() {
 		String path = System.getProperty("user.dir") + File.separator + ConfigFile;
 		File fp = new File(path);
@@ -54,7 +57,7 @@ public class SystemCommander {
 		
 		try {
 			StringJoiner joiner = new StringJoiner(", ");
-			
+
 			ConfigParseOptions options = ConfigParseOptions.defaults();
 			options.setSyntax(ConfigSyntax.CONF);
 			
