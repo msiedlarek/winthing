@@ -28,10 +28,12 @@ import org.slf4j.LoggerFactory;
 import com.fatico.winthing.Application;
 import com.fatico.winthing.logging.ConsoleLogger;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 @SuppressWarnings("serial")
 public class WindowGUI extends JFrame {
-	public static String APPNAME;
-	public static String APPVERSION;
+	private final String APPNAME;
+	private final String APPVERSION;
 	
 	private static WindowGUI singleton = new WindowGUI();
 	
@@ -84,12 +86,12 @@ public class WindowGUI extends JFrame {
 		
 		JButton btnClose = new JButton("Close");
 		btnClose.setToolTipText("Close this window");
-		btnClose.addMouseListener(new mouseEventListener(this, Actions.CLOSE));
+		btnClose.addMouseListener(new MouseEventListener(this, Actions.CLOSE));
 		panel.add(btnClose);
 		
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.setToolTipText("Stop and terminate application");
-		btnQuit.addMouseListener(new mouseEventListener(this, Actions.QUIT));
+		btnQuit.addMouseListener(new MouseEventListener(this, Actions.QUIT));
 		panel.add(btnQuit);
 	}
 	
@@ -114,15 +116,15 @@ public class WindowGUI extends JFrame {
 				 popup.addSeparator();
 				 
 				 MenuItem menuEvent = new MenuItem("Events");
-				 menuEvent.addActionListener(new mouseEventListener(this, Actions.EVENTS));
+				 menuEvent.addActionListener(new MouseEventListener(this, Actions.EVENTS));
 				 popup.add(menuEvent);
 				 
 				 MenuItem menuExit = new MenuItem("Exit");
-				 menuExit.addActionListener(new mouseEventListener(this, Actions.EXIT));
+				 menuExit.addActionListener(new MouseEventListener(this, Actions.EXIT));
 				 popup.add(menuExit);
 				 
 				 trayIcon = new TrayIcon(scaled, APPNAME + " " + APPVERSION, popup);
-				 trayIcon.addMouseListener(new mouseEventListener(this, Actions.EVENTS));
+				 trayIcon.addMouseListener(new MouseEventListener(this, Actions.EVENTS));
 				 
 				 tray.add(trayIcon);
 			 }
@@ -168,14 +170,15 @@ public class WindowGUI extends JFrame {
 	}
 	
 	public void quit() {
-		System.exit(0);
+		Application.quit();
 	}
 	
-	public class mouseEventListener implements ActionListener, MouseListener {
+	@SuppressFBWarnings("SIC_INNER_SHOULD_BE_STATIC") 
+	public class MouseEventListener implements ActionListener, MouseListener {
 		private Actions action;
 		private WindowGUI window;
 		
-		public mouseEventListener(WindowGUI gui, Actions act) {
+		public MouseEventListener(WindowGUI gui, Actions act) {
 			window = gui;
 			action = act;
 		}
