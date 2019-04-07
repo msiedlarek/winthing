@@ -6,12 +6,12 @@ import ch.qos.logback.core.PropertyDefinerBase;
 
 public class FileLogEnabler extends PropertyDefinerBase {
 
-	@Override
-	public String getPropertyValue() {
-		if (Application.debug()) {
-			return "true";
-		}
-		
-		return "false";
-	}
+    @Override
+    public String getPropertyValue() {
+        if (Application.debug()) {
+            return "true";
+        }
+
+        return "false";
+    }
 }

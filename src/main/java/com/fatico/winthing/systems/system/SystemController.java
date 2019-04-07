@@ -46,9 +46,9 @@ public class SystemController extends BaseController {
         registry.subscribe(prefix + "commands/reboot", this::reboot);
         registry.subscribe(prefix + "commands/open", this::open);
         registry.subscribe(prefix + "commands/run", this::run);
-        
+
         systemCommander = new SystemCommander();
-        systemCommander.parseConfig();        
+        systemCommander.parseConfig();
     }
 
     public void shutdown(final Message message) {
@@ -58,7 +58,7 @@ public class SystemController extends BaseController {
     void reboot(final Message message) {
         systemService.reboot();
     }
-    
+
     public void suspend(final Message message) {
         systemService.suspend();
     }
@@ -71,28 +71,28 @@ public class SystemController extends BaseController {
         final String command;
         final String parameters;
         final String workingDirectory;
-        
+
         try {
             final JsonArray arguments = message.getPayload().get().getAsJsonArray();
             command = arguments.get(0).getAsString();
             parameters = (arguments.size() > 1 ? arguments.get(1).getAsString() : "");
-            workingDirectory = (arguments.size() > 2 ? arguments.get(2).getAsString() : null);            
+            workingDirectory = (arguments.size() > 2 ? arguments.get(2).getAsString() : null);
         } catch (final NoSuchElementException | IllegalStateException exception) {
             throw new IllegalArgumentException("Invalid arguments.");
         }
-        
+
         if (systemCommander.isEnabled()) {
-        	String cmd = systemCommander.getCommand(command);
-        	if (cmd == null) {
-        		throw new SystemException("Invalid command: " + command);
-        	}
-        	
-        	File fp = new File(cmd);
-        	if (!fp.exists()) {
-        		throw new SystemException("File not found: " + cmd);
-        	}
+            String cmd = systemCommander.getCommand(command);
+            if (cmd == null) {
+                throw new SystemException("Invalid command: " + command);
+            }
+
+            File fp = new File(cmd);
+            if (!fp.exists()) {
+                throw new SystemException("File not found: " + cmd);
+            }
         }
-        
+
         systemService.run(command, parameters, workingDirectory);
     }
 

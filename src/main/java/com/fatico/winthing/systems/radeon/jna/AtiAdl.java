@@ -14,6 +14,12 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.List;
 
+@SuppressWarnings({
+    "checkstyle:typename",
+    "checkstyle:abbreviationaswordinname",
+    "checkstyle:methodname",
+    "checkstyle:membername",
+    "checkstyle:parametername"})
 @SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public interface AtiAdl extends Library {
 

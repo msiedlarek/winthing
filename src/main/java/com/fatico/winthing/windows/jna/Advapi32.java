@@ -6,6 +6,7 @@ import com.sun.jna.win32.W32APIOptions;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressWarnings({"checkstyle:methodname", "checkstyle:parametername"})
 @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
 public interface Advapi32 extends com.sun.jna.platform.win32.Advapi32 {
 

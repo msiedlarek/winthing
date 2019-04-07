@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+@SuppressWarnings({"checkstyle:nofinalizer"})
 public class RadeonService {
 
     private final AtiAdl atiAdl;
