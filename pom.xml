@@ -230,7 +230,7 @@
                         <configuration>
                             <headerType>gui</headerType>
                             <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
-                            <outfile>${project.build.directory}/winthing.exe</outfile>
+                            <outfile>${project.build.directory}/winthing-${project.version}.exe</outfile>
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <classPath>
                                 <mainClass>com.fatico.winthing.Application</mainClass>
