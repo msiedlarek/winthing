@@ -5,9 +5,7 @@ import com.fatico.winthing.logging.ConsoleLogger;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -36,10 +34,6 @@ import javax.swing.JTextArea;
 public class WindowGui extends JFrame {
     private final String appName;
     private final String appVersion;
-
-    private static WindowGui singleton = new WindowGui();
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private Map<Integer, Component> components = new HashMap<Integer, Component>();
 
     public enum Gui {
@@ -61,10 +55,12 @@ public class WindowGui extends JFrame {
         QUIT
     }
 
-    private WindowGui() {
+    public WindowGui() {
         appName = Application.class.getPackage().getImplementationTitle();
         appVersion = Application.class.getPackage().getImplementationVersion();
+    }
 
+    public void initialize() throws AWTException {
         setTitle(appName + " " + appVersion);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setVisible(false);
@@ -95,47 +91,37 @@ public class WindowGui extends JFrame {
         btnQuit.setToolTipText("Stop and terminate application");
         btnQuit.addMouseListener(new MouseEventListener(this, Actions.QUIT));
         panel.add(btnQuit);
-    }
 
-    public static WindowGui getInstance() {
-        return singleton;
-    }
+        TrayIcon trayIcon = null;
+        if (SystemTray.isSupported()) {
+            PopupMenu popup = new PopupMenu();
 
-    public void tray() {
-        try {
-            TrayIcon trayIcon = null;
-            if (SystemTray.isSupported()) {
-                PopupMenu popup = new PopupMenu();
+            MenuItem menuTitle = new MenuItem(appName);
+            menuTitle.setEnabled(false);
+            popup.add(menuTitle);
 
-                MenuItem menuTitle = new MenuItem(appName);
-                menuTitle.setEnabled(false);
-                popup.add(menuTitle);
+            popup.addSeparator();
 
-                popup.addSeparator();
+            MenuItem menuEvent = new MenuItem("Events");
+            menuEvent.addActionListener(new MouseEventListener(this, Actions.EVENTS));
+            popup.add(menuEvent);
 
-                MenuItem menuEvent = new MenuItem("Events");
-                menuEvent.addActionListener(new MouseEventListener(this, Actions.EVENTS));
-                popup.add(menuEvent);
+            MenuItem menuExit = new MenuItem("Exit");
+            menuExit.addActionListener(new MouseEventListener(this, Actions.EXIT));
+            popup.add(menuExit);
 
-                MenuItem menuExit = new MenuItem("Exit");
-                menuExit.addActionListener(new MouseEventListener(this, Actions.EXIT));
-                popup.add(menuExit);
+            SystemTray tray = SystemTray.getSystemTray();
 
-                SystemTray tray = SystemTray.getSystemTray();
+            URL url = getClass().getClassLoader().getResource("favicon-red.png");
+            Image image = Toolkit.getDefaultToolkit().getImage(url);
 
-                URL url = getClass().getClassLoader().getResource("favicon-red.png");
-                Image image = Toolkit.getDefaultToolkit().getImage(url);
+            int trayWidth = tray.getTrayIconSize().width;
+            int trayheight = tray.getTrayIconSize().height;
+            Image scaled = image.getScaledInstance(trayWidth, trayheight, Image.SCALE_SMOOTH);
 
-                int trayWidth = tray.getTrayIconSize().width;
-                int trayheight = tray.getTrayIconSize().height;
-                Image scaled = image.getScaledInstance(trayWidth, trayheight, Image.SCALE_SMOOTH);
-
-                trayIcon = new TrayIcon(scaled, appName + " " + appVersion, popup);
-                trayIcon.addMouseListener(new MouseEventListener(this, Actions.EVENTS));
-                tray.add(trayIcon);
-            }
-        } catch (Throwable e) {
-            logger.warn("System tray not supported", e);
+            trayIcon = new TrayIcon(scaled, appName + " " + appVersion, popup);
+            trayIcon.addMouseListener(new MouseEventListener(this, Actions.EVENTS));
+            tray.add(trayIcon);
         }
     }
 
