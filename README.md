@@ -131,7 +131,8 @@ Trigger immediate system hibernate.
 **Topic:** winthing/system/commands/run<br>
 **Payload:** [command:string, arguments:string, workingDirectory:string]
 
-Run a command. Arguments and working directory are optional (empty string and null by default). If whitelist is enabled, only the command as unique identifier is required. The identifier is checked against the whitelist file.
+Run a command. Arguments and working directory are optional (empty string and null by default).<br>
+If whitelist is enabled, only the command as unique identifier is required. The identifier is checked against the whitelist file (see **whitelist.ini** above).
 
 ---
 
