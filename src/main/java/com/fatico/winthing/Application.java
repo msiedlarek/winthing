@@ -10,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Application {
+    private static final Application app = new Application();
+
     private boolean debug = false;
-    private static Application app = new Application();
-    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+    private WindowGui gui;
+    private Logger logger;
 
     private void parseArgs(String[] args) {
         for (String arg : args) {
@@ -26,23 +28,30 @@ public class Application {
         return app.debug;
     }
 
+    public static WindowGui getApp() {
+        return app.gui;
+    }
+
     public static void quit() {
-        logger.info("Application terminated.");
+        app.logger.info("Application terminated.");
         System.exit(0);
     }
 
     public static void main(final String[] args) {
         try {
             app.parseArgs(args);
-            WindowGui gui = WindowGui.getInstance();
-            gui.tray();
+
+            app.logger = LoggerFactory.getLogger(Application.class);
+
+            app.gui = new WindowGui();
+            app.gui.initialize();
 
             final Injector injector = Guice.createInjector(new ApplicationModule());
             final Engine engine = injector.getInstance(Engine.class);
             engine.run();
 
         } catch (final Throwable throwable) {
-            logger.error("Critical error.", throwable);
+            app.logger.error("Critical error.", throwable);
             System.exit(1);
         }
     }
