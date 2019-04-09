@@ -1,6 +1,6 @@
 package com.fatico.winthing.logging;
 
-import com.fatico.winthing.gui.WindowGui;
+import com.fatico.winthing.Application;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ConsoleLogger extends ConsoleAppender<ILoggingEvent> {
     private static final int LOG_SIZE = 50;
-    private static ConcurrentLinkedQueue<String> events = new ConcurrentLinkedQueue<String>();
+    private static final ConcurrentLinkedQueue<String> events = new ConcurrentLinkedQueue<String>();
 
     public static String getEvents() {
         if (events.size() == 0) {
@@ -35,7 +35,6 @@ public class ConsoleLogger extends ConsoleAppender<ILoggingEvent> {
         byte[] data = encoder.encode(event);
         events.add(new String(data, Charset.forName("UTF-8")));
 
-        WindowGui gui = WindowGui.getInstance();
-        gui.reload();
+        Application.getApp().reload();
     }
 }
