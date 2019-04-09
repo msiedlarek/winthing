@@ -26,7 +26,7 @@ public class SystemController extends BaseController {
         this.systemService = Objects.requireNonNull(systemService);
         registry.queueInitialMessage(
             makeMessage(
-                prefix + "online",
+                "online",
                 new JsonPrimitive(true),
                 QualityOfService.AT_LEAST_ONCE,
                 true
@@ -34,7 +34,7 @@ public class SystemController extends BaseController {
         );
         registry.setWill(
             makeMessage(
-                prefix + "online",
+                "online",
                 new JsonPrimitive(false),
                 QualityOfService.AT_LEAST_ONCE,
                 true
