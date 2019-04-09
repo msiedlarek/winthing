@@ -3,7 +3,7 @@
 
     <groupId>com.fatico</groupId>
     <artifactId>winthing</artifactId>
-    <version>1.3.1-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
 
     <name>WinThing</name>
     <description>Remotely control Windows through MQTT.</description>
@@ -39,6 +39,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.java>8</version.java>
         <checkstyle.config>${project.basedir}/checkstyle.xml</checkstyle.config>
         <version.slf4j>1.7.26</version.slf4j>
         <version.logback>1.2.3</version.logback>
@@ -185,9 +186,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
                     <!-- <release>11</release> -->
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
                     <compilerArgs>
                         <arg>-Xlint</arg>
                         <arg>-Werror</arg>
@@ -253,8 +254,8 @@
                             <jre>
                                 <bundledJre64Bit>false</bundledJre64Bit>
                                 <bundledJreAsFallback>false</bundledJreAsFallback>
-                                <minVersion>1.8</minVersion>
-                                <jdkPreference>jreOnly</jdkPreference>
+                                <minVersion>${version.java}</minVersion>
+                                <jdkPreference>preferJdk</jdkPreference>
                                 <runtimeBits>64</runtimeBits>
                             </jre>
                         </configuration>
