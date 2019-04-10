@@ -68,9 +68,9 @@ public class SystemController extends BaseController {
     }
 
     public void run(final Message message) {
-        final String command;
-        final String parameters;
-        final String workingDirectory;
+        String command;
+        String parameters;
+        String workingDirectory;
 
         try {
             final JsonArray arguments = message.getPayload().get().getAsJsonArray();
@@ -82,15 +82,17 @@ public class SystemController extends BaseController {
         }
 
         if (systemCommander.isEnabled()) {
-            String cmd = systemCommander.getCommand(command);
-            if (cmd == null) {
-                throw new SystemException("Invalid command: " + command);
+            String commander = systemCommander.getCommand(command);
+            if (commander == null) {
+                throw new SystemException("Invalid command.");
             }
 
-            File fp = new File(cmd);
+            File fp = new File(commander);
             if (!fp.exists()) {
-                throw new SystemException("File not found: " + cmd);
+                throw new SystemException("File not found.");
             }
+
+            command = commander;
         }
 
         systemService.run(command, parameters, workingDirectory);
