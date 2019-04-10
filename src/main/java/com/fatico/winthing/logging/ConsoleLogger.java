@@ -6,7 +6,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
+import java.util.Iterator;
+import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ConsoleLogger extends ConsoleAppender<ILoggingEvent> {
@@ -18,9 +19,13 @@ public class ConsoleLogger extends ConsoleAppender<ILoggingEvent> {
             return "";
         }
 
-        String[] logs = new String[events.size()];
-        events.toArray(logs);
-        String result = Arrays.toString(logs);
+        StringJoiner joiner = new StringJoiner("");
+        Iterator<String> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            joiner.add(iterator.next());
+        }
+
+        String result = joiner.toString();
 
         return result;
     }
