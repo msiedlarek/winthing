@@ -3,7 +3,7 @@
     
     <appender name="STDOUT" class="com.fatico.winthing.logging.ConsoleLogger">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss} %level [%thread/%logger{36}] %msg%n</pattern>
         </encoder>
     </appender>
     
@@ -13,7 +13,7 @@
                 <file>winthing.log</file>
                 <append>false</append>
                 <encoder>
-                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+                    <pattern>%d{HH:mm:ss} %level [%thread/%logger{36}] %msg%n</pattern>
                 </encoder>
             </appender>
         </then>
