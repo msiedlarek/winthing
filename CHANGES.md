@@ -18,7 +18,10 @@
 - Add tray icon and GUI console window
 - Read settings from file
 - Add configurable whitelist of allowed commands to execute
-- Create file logs only when enabled 
+- Create file logs only when enabled
+- Remove prefix from config parameters
+- Update dependencies
+- Update build for Java 11 
 
 ## 1.2.0
 
