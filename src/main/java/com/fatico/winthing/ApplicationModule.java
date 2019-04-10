@@ -41,8 +41,6 @@ public class ApplicationModule extends AbstractModule {
         Config cfg = ConfigFactory.load();
         String path = System.getProperty("user.dir") + File.separator + ConfigFile;
 
-        System.out.println(path);
-
         File fp = new File(path);
         if (fp.exists()) {
             ConfigParseOptions options = ConfigParseOptions.defaults();
