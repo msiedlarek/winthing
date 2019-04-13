@@ -1,5 +1,6 @@
 package com.fatico.winthing.messaging;
 
+import com.fatico.winthing.Application;
 import com.fatico.winthing.Settings;
 
 import com.google.common.base.Charsets;
@@ -8,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
+
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
@@ -60,7 +62,7 @@ public class Engine implements MqttCallback, MessagePublisher {
         this.registry = Objects.requireNonNull(registry);
 
         this.client = new MqttAsyncClient(
-            config.getString(Settings.BROKER_URL),
+            "tcp://" + config.getString(Settings.BROKER_URL),
             config.getString(Settings.CLIENT_ID),
             persistence
         );
@@ -148,9 +150,13 @@ public class Engine implements MqttCallback, MessagePublisher {
         registry.getInitialMessages().stream().forEach(this::publish);
 
         logger.info("Engine started.");
+
+        Application.getApp().setIcon(true);
     }
 
     private void disconnect() throws MqttException {
+        Application.getApp().setIcon(false);
+
         client.disconnect();
     }
 
@@ -169,6 +175,8 @@ public class Engine implements MqttCallback, MessagePublisher {
 
     @Override
     public void connectionLost(final Throwable throwable) {
+        Application.getApp().setIcon(false);
+
         logger.error("Connection lost.");
         runnningLock.lock();
         try {

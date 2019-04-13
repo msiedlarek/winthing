@@ -10,12 +10,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.google.inject.Inject;
 
+import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SystemController extends BaseController {
 
     private final SystemService systemService;
+    private final SystemCommander systemCommander;
 
     @Inject
     public SystemController(final Registry registry, final SystemService systemService)
@@ -24,7 +26,7 @@ public class SystemController extends BaseController {
         this.systemService = Objects.requireNonNull(systemService);
         registry.queueInitialMessage(
             makeMessage(
-                prefix + "online",
+                "online",
                 new JsonPrimitive(true),
                 QualityOfService.AT_LEAST_ONCE,
                 true
@@ -32,7 +34,7 @@ public class SystemController extends BaseController {
         );
         registry.setWill(
             makeMessage(
-                prefix + "online",
+                "online",
                 new JsonPrimitive(false),
                 QualityOfService.AT_LEAST_ONCE,
                 true
@@ -42,8 +44,11 @@ public class SystemController extends BaseController {
         registry.subscribe(prefix + "commands/suspend", this::suspend);
         registry.subscribe(prefix + "commands/hibernate", this::hibernate);
         registry.subscribe(prefix + "commands/reboot", this::reboot);
-        registry.subscribe(prefix + "commands/run", this::run);
         registry.subscribe(prefix + "commands/open", this::open);
+        registry.subscribe(prefix + "commands/run", this::run);
+
+        systemCommander = new SystemCommander();
+        systemCommander.parseConfig();
     }
 
     public void shutdown(final Message message) {
@@ -53,7 +58,7 @@ public class SystemController extends BaseController {
     void reboot(final Message message) {
         systemService.reboot();
     }
-    
+
     public void suspend(final Message message) {
         systemService.suspend();
     }
@@ -63,9 +68,10 @@ public class SystemController extends BaseController {
     }
 
     public void run(final Message message) {
-        final String command;
-        final String parameters;
-        final String workingDirectory;
+        String command;
+        String parameters;
+        String workingDirectory;
+
         try {
             final JsonArray arguments = message.getPayload().get().getAsJsonArray();
             command = arguments.get(0).getAsString();
@@ -74,6 +80,21 @@ public class SystemController extends BaseController {
         } catch (final NoSuchElementException | IllegalStateException exception) {
             throw new IllegalArgumentException("Invalid arguments.");
         }
+
+        if (systemCommander.isEnabled()) {
+            String commander = systemCommander.getCommand(command);
+            if (commander == null) {
+                throw new SystemException("Invalid command.");
+            }
+
+            File fp = new File(commander);
+            if (!fp.exists()) {
+                throw new SystemException("File not found.");
+            }
+
+            command = commander;
+        }
+
         systemService.run(command, parameters, workingDirectory);
     }
 

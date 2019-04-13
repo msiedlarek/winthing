@@ -9,6 +9,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 @SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public interface AtiAdl extends Library {
 
-    AtiAdl INSTANCE = (AtiAdl) Native.loadLibrary(
+    AtiAdl INSTANCE = (AtiAdl) Native.load(
         (Platform.is64Bit() ? "atiadlxx" : "atiadlxy"),
         AtiAdl.class
     );

@@ -3,4 +3,4 @@ jdk: oraclejdk8
 script:
   - mvn checkstyle:check
   - mvn pmd:check
-  - mvn findbugs:check
+  - mvn spotbugs:check

@@ -3,7 +3,7 @@
 
     <groupId>com.fatico</groupId>
     <artifactId>winthing</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.4.1</version>
 
     <name>WinThing</name>
     <description>Remotely control Windows through MQTT.</description>
@@ -39,16 +39,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.java>8</version.java>
         <checkstyle.config>${project.basedir}/checkstyle.xml</checkstyle.config>
-        <version.slf4j>1.7.22</version.slf4j>
-        <version.logback>1.1.8</version.logback>
-        <version.guava>20.0</version.guava>
-        <version.guice>4.1.0</version.guice>
-        <version.gson>2.8.0</version.gson>
-        <version.paho>1.1.0</version.paho>
-        <version.jna>4.4.0</version.jna>
-        <version.typesafe.config>1.3.1</version.typesafe.config>
-        <version.findbugs>3.0.1</version.findbugs>
+        <version.slf4j>1.7.26</version.slf4j>
+        <version.logback>1.2.3</version.logback>
+        <version.guava>27.1-jre</version.guava>
+        <version.guice>4.2.2</version.guice>
+        <version.gson>2.8.5</version.gson>
+        <version.paho>1.2.1</version.paho>
+        <version.jna>5.2.0</version.jna>
+        <version.typesafe.config>1.3.3</version.typesafe.config>
+        <version.janino>3.0.12</version.janino>
+        <version.spotbugs>4.0.0-beta1</version.spotbugs>
     </properties>
 
     <repositories>
@@ -74,7 +76,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${version.logback}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -112,23 +113,28 @@
             <version>${version.typesafe.config}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${version.findbugs}</version>
+        	<groupId>org.codehaus.janino</groupId>
+        	<artifactId>janino</artifactId>
+        	<version>${version.janino}</version>
         </dependency>
+		<dependency>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs</artifactId>
+			<version>${version.spotbugs}</version>
+		</dependency>
     </dependencies>
 
     <build>
-        <plugins>
+        <plugins> 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
+                <version>3.0.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>7.3</version>
+                        <version>8.19</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -153,6 +159,7 @@
                 <configuration>
                     <printFailingErrors>true</printFailingErrors>
                     <verbose>true</verbose>
+                    <linkXRef>false</linkXRef>
                 </configuration>
                 <executions>
                     <execution>
@@ -163,12 +170,25 @@
                 </executions>
             </plugin>
             <plugin>
+  				<groupId>com.github.spotbugs</groupId>
+  				<artifactId>spotbugs-maven-plugin</artifactId>
+  				<version>3.1.11</version>
+  				<executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+			</plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <!-- <release>11</release> -->
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
                     <compilerArgs>
                         <arg>-Xlint</arg>
                         <arg>-Werror</arg>
@@ -178,7 +198,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -186,10 +206,15 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                        	<finalName>${project.artifactId}-${project.version}</finalName>
                             <dependencyReducedPomLocation>${project.build.directory}/pom.xml</dependencyReducedPomLocation>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.fatico.winthing.Application</mainClass>
+                                    <manifestEntries>
+                                    	<Implementation-Title>${project.name}</Implementation-Title>
+                            			<Implementation-Version>${project.version}</Implementation-Version>
+                                    </manifestEntries>
                                 </transformer>
                             </transformers>
                             <filters>
@@ -207,17 +232,33 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.4</version>
-                <configuration>
-                    <effort>Max</effort>
-                </configuration>
-                <executions>
+               	<groupId>com.akathist.maven.plugins.launch4j</groupId>
+               	<artifactId>launch4j-maven-plugin</artifactId>
+               	<version>1.7.25</version>
+               	<executions>
                     <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>check</goal>
+                            <goal>launch4j</goal>
                         </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
+                            <outfile>${project.build.directory}/winthing-${project.version}.exe</outfile>
+							<icon>${project.build.resources[0].directory}/favicon.ico</icon>
+                            <downloadUrl>http://java.com/download</downloadUrl>
+                            <classPath>
+                                <mainClass>com.fatico.winthing.Application</mainClass>
+                            </classPath>
+                            <jre>
+                                <bundledJre64Bit>false</bundledJre64Bit>
+                                <bundledJreAsFallback>false</bundledJreAsFallback>
+                                <minVersion>${version.java}</minVersion>
+                                <jdkPreference>preferJdk</jdkPreference>
+                                <runtimeBits>64</runtimeBits>
+                            </jre>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
