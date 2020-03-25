@@ -1,0 +1,22 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Checkstyle
+        run: mvn checkstyle:check
+      - name: Build
+        run: mvn package
+      - name: Run PMD
+        run: mvn pmd:check
+      - name: Run SpotBugs
+        run: mvn spotbugs:check
+      - name: Create artifacts directory
+        run: mkdir -p target/artifacts
+      - name: Prepare artifacts for packaging
+        run: mv target/winthing-* target/artifacts
+      - uses: actions/upload-artifact@v1
+        with:
+          name: artifacts
+          path: target/artifacts

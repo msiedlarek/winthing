@@ -1,6 +1,6 @@
 # WinThing
 
-[![Build Status](https://travis-ci.org/mghaan/winthing.svg?branch=master)](https://travis-ci.org/mghaan/winthing)
+[Build Status](https://github.com/msiedlarek/winthing/workflows/build/badge.svg)
 
 A modular background service that makes Windows remotely controllable through MQTT. For home automation and Internet of Things.
 
