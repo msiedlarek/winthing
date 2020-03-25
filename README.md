@@ -1,31 +1,19 @@
 # WinThing
 
-[Build Status](https://github.com/msiedlarek/winthing/workflows/build/badge.svg)
+![Build Status](https://github.com/msiedlarek/winthing/workflows/build/badge.svg)
 
 A modular background service that makes Windows remotely controllable through MQTT. For home automation and Internet of Things.
 
 ## Requirements
 
-Java SE 8 or Java SE 11 is required on your local machine. Other Java versions untested.<br>
-
-## Compilation
-
-Maven is required to build Java application. For convenience the Maven build file contains execution to produce a Windows executable.  
-
-    mvn clean package
-    mvn package
+Java 8 or greater.
 
 ## Running
 
-Download the Windows executable and run it: 
+Download either JAR or EXE file from [Releases page](https://github.com/msiedlarek/winthing/releases) and execute it:
 
-	winthing-1.3.0.exe
-	
-or you can execute the Java file:
-
-    java -jar winthing-1.3.0.jar
-    
-*1.3.0 represents the application version and is changing with each update. Feel free to rename the file to winthing.exe to keep the same name.*
+	target/winthing-1.4.2.exe
+    java -jar target/winthing-1.4.2.jar
 
 ## Configuration
 
@@ -55,7 +43,7 @@ Example file:
 	broker = "127.0.0.1:1883"
 	username = "mqtt"
 	password = "somesecret"
-	
+
 ### winthing.ini
 
 By default WinThing executes any command it receives in the system/commands/run topic. Create this file in the current working directory to whitelist only specific commands. The file contains an unique string identifier (used as payload in the MQTT message, see below) and path to executable.
@@ -64,9 +52,9 @@ Example file:
 
 	notepad = "c:/windows/system32/notepad.exe"
 	adobe = "c:\\program files\\adobe\\reader.exe"
-	
+
 *Note you can use slash* ' / ' *or double backslash* ' \\\\ ' *as path separator.*
-	
+
 ## Logging
 
 You can open application log by clicking on the tray icon. To log into **winthing.log** file in the current working directory run WinThing with the **-debug** parameter.
@@ -93,7 +81,7 @@ Example valid message payloads:
 **Payload:** state:boolean<br>
 **QoS:** 2<br>
  **Persistent:** yes<br>
- 
+
 True when WinThing is running, false otherwise. WinThing registers a "last will" message with the broker to notify clients when WinThing disconnects.
 
 ### Commands
@@ -121,7 +109,7 @@ Trigger immediate system suspend.
 
 ---
 
-**Topic:** winthing/system/commands/hibernate<br> 
+**Topic:** winthing/system/commands/hibernate<br>
 **Payload:** -
 
 Trigger immediate system hibernate.
@@ -176,9 +164,21 @@ Sets the screen to the best available resolution.
 
 Sets the screen to the given resolution.
 
+## Building
+
+Maven is required to build the application. For convenience the Maven build file contains execution to produce a Windows executable.
+
+    mvn clean package
+
+To run static analysis tools, use these commands:
+
+    mvn checkstyle:check
+    mvn pmd:check
+    mvn spotbugs:check
+
 ## License
 
-Copyright 2015-2016 Mikołaj Siedlarek &lt;mikolaj@siedlarek.pl&gt;
+Copyright 2015-2020 Mikołaj Siedlarek &lt;mikolaj@siedlarek.pl&gt;
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this software except in compliance with the License.
