@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<FindBugsFilter>
+  <Match>
+    <!-- False positives for Logback -->
+    <Bug pattern="CRLF_INJECTION_LOGS"/>
+  </Match>
+</FindBugsFilter>

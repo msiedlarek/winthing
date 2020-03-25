@@ -8,7 +8,6 @@ import com.fatico.winthing.windows.SystemException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.google.inject.Inject;
-import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -73,8 +72,8 @@ public class SystemController extends BaseController {
         try {
             final JsonArray arguments = message.getPayload().get().getAsJsonArray();
             command = arguments.get(0).getAsString();
-            parameters = (arguments.size() > 1 ? arguments.get(1).getAsString() : "");
-            workingDirectory = (arguments.size() > 2 ? arguments.get(2).getAsString() : null);
+            parameters = arguments.size() > 1 ? arguments.get(1).getAsString() : "";
+            workingDirectory = arguments.size() > 2 ? arguments.get(2).getAsString() : null;
         } catch (final NoSuchElementException | IllegalStateException exception) {
             throw new IllegalArgumentException("Invalid arguments.");
         }
@@ -84,12 +83,6 @@ public class SystemController extends BaseController {
             if (commander == null) {
                 throw new SystemException("Invalid command.");
             }
-
-            File fp = new File(commander);
-            if (!fp.exists()) {
-                throw new SystemException("File not found.");
-            }
-
             command = commander;
         }
 

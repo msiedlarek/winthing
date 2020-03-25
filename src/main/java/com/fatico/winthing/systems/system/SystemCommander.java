@@ -24,23 +24,8 @@ public class SystemCommander {
         return isEnabled;
     }
 
-    public String[] getList() {
-        if (whitelist.keySet().size() == 0) {
-            return null;
-        }
-
-        String[] keys = new String[whitelist.keySet().size()];
-        whitelist.keySet().toArray(keys);
-
-        return keys;
-    }
-
     public String getCommand(String key) {
         return whitelist.get(key);
-    }
-
-    public int count() {
-        return whitelist.size();
     }
 
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")

@@ -2,10 +2,12 @@ package com.fatico.winthing.windows.input;
 
 import com.google.common.collect.ImmutableSet;
 import com.sun.jna.platform.win32.WinDef;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@SuppressFBWarnings("DM_CONVERT_CASE")
 public enum KeyboardKey {
 
     CANCEL(3),
@@ -181,6 +183,7 @@ public enum KeyboardKey {
     OEM_CLEAR(0xFE);
 
     private static final Map<String, KeyboardKey> index = new HashMap<>();
+
     static {
         for (final KeyboardKey key : KeyboardKey.values()) {
             index.put(key.name().toLowerCase(), key);

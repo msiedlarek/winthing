@@ -4,6 +4,7 @@ import com.fatico.winthing.gui.WindowGui;
 import com.fatico.winthing.messaging.Engine;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ public class Application {
         return app.gui;
     }
 
+    @SuppressFBWarnings("DM_EXIT")
     public static void quit() {
         app.logger.info("Application terminated.");
         System.exit(0);

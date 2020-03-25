@@ -40,7 +40,7 @@ public class WindowGui extends JFrame {
 
         public final int key;
 
-        private Gui(int value) {
+        Gui(int value) {
             key = value;
         }
     }

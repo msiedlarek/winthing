@@ -12,6 +12,7 @@ import com.typesafe.config.ConfigParseOptions;
 import com.typesafe.config.ConfigSyntax;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.File;
+import java.util.Locale;
 
 public class ApplicationModule extends AbstractModule {
     public static final String ConfigFile = "winthing.conf";
@@ -21,7 +22,7 @@ public class ApplicationModule extends AbstractModule {
         bind(Gson.class).in(Singleton.class);
 
         install(new MessagingModule());
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+        if (System.getProperty("os.name").toLowerCase(Locale.getDefault()).contains("win")) {
             install(new WindowsModule());
             install(new com.fatico.winthing.systems.system.Module());
             install(new com.fatico.winthing.systems.keyboard.Module());

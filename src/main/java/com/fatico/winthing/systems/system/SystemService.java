@@ -11,6 +11,7 @@ import com.sun.jna.platform.win32.Tlhelp32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinUser;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,7 @@ public class SystemService {
         }
     }
 
+    @SuppressFBWarnings("DM_CONVERT_CASE")
     public Map<Integer, String> findProcesses(final String nameFragment) {
         Objects.requireNonNull(nameFragment);
 

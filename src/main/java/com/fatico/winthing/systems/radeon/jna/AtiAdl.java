@@ -18,11 +18,12 @@ import java.util.List;
     "checkstyle:methodname",
     "checkstyle:membername",
     "checkstyle:parametername"})
-@SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
+@SuppressFBWarnings({"UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD",
+    "UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"})
 public interface AtiAdl extends Library {
 
     AtiAdl INSTANCE = (AtiAdl) Native.load(
-        (Platform.is64Bit() ? "atiadlxx" : "atiadlxy"),
+        Platform.is64Bit() ? "atiadlxx" : "atiadlxy",
         AtiAdl.class
     );
 

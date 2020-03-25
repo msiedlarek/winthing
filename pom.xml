@@ -39,9 +39,10 @@
   </developers>
 
   <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <version.java>8</version.java>
     <checkstyle.config>${project.basedir}/checkstyle.xml</checkstyle.config>
     <version.slf4j>1.7.30</version.slf4j>
     <version.logback>1.2.3</version.logback>
@@ -125,6 +126,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.1</version>
+        <configuration>
+          <configLocation>${checkstyle.config}</configLocation>
+          <encoding>UTF-8</encoding>
+          <failsOnError>true</failsOnError>
+          <violationSeverity>warning</violationSeverity>
+          <linkXRef>false</linkXRef>
+          <consoleOutput>true</consoleOutput>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -132,20 +141,6 @@
             <version>8.30</version>
           </dependency>
         </dependencies>
-        <configuration>
-          <configLocation>${checkstyle.config}</configLocation>
-          <encoding>UTF-8</encoding>
-          <failsOnError>true</failsOnError>
-          <violationSeverity>warning</violationSeverity>
-          <linkXRef>false</linkXRef>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -156,33 +151,30 @@
           <verbose>true</verbose>
           <linkXRef>false</linkXRef>
         </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>3.1.11</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <failOnError>true</failOnError>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.10.1</version>
+            </plugin>
+          </plugins>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <source>${version.java}</source>
-          <target>${version.java}</target>
           <compilerArgs>
             <arg>-Xlint</arg>
             <arg>-Werror</arg>
@@ -250,7 +242,7 @@
               <jre>
                 <bundledJre64Bit>false</bundledJre64Bit>
                 <bundledJreAsFallback>false</bundledJreAsFallback>
-                <minVersion>${version.java}</minVersion>
+                <minVersion>${maven.compiler.target}</minVersion>
                 <jdkPreference>preferJdk</jdkPreference>
                 <runtimeBits>64</runtimeBits>
               </jre>
