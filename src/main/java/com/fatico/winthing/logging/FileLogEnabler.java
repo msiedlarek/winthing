@@ -1,8 +1,7 @@
 package com.fatico.winthing.logging;
 
-import com.fatico.winthing.Application;
-
 import ch.qos.logback.core.PropertyDefinerBase;
+import com.fatico.winthing.Application;
 
 public class FileLogEnabler extends PropertyDefinerBase {
 

@@ -3,7 +3,6 @@ package com.fatico.winthing.windows;
 import com.fatico.winthing.windows.jna.Advapi32;
 import com.fatico.winthing.windows.jna.Kernel32;
 import com.fatico.winthing.windows.jna.User32;
-
 import com.google.inject.PrivateModule;
 import com.sun.jna.platform.win32.Shell32;
 

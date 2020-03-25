@@ -2,7 +2,6 @@ package com.fatico.winthing.windows.jna;
 
 import com.sun.jna.Native;
 import com.sun.jna.win32.W32APIOptions;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressWarnings({"checkstyle:methodname", "checkstyle:parametername"})

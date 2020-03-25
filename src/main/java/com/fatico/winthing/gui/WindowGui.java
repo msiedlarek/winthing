@@ -2,9 +2,7 @@ package com.fatico.winthing.gui;
 
 import com.fatico.winthing.Application;
 import com.fatico.winthing.logging.ConsoleLogger;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -23,7 +21,6 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

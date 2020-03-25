@@ -1,7 +1,6 @@
 package com.fatico.winthing.messaging;
 
 import com.google.gson.JsonElement;
-
 import java.util.Objects;
 import java.util.Optional;
 

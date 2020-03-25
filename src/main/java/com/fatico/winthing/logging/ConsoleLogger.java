@@ -1,10 +1,8 @@
 package com.fatico.winthing.logging;
 
-import com.fatico.winthing.Application;
-
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
-
+import com.fatico.winthing.Application;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.StringJoiner;

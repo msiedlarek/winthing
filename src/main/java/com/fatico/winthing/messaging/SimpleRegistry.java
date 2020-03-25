@@ -3,7 +3,6 @@ package com.fatico.winthing.messaging;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;

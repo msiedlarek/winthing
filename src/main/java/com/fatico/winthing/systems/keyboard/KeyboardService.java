@@ -2,11 +2,9 @@ package com.fatico.winthing.systems.keyboard;
 
 import com.fatico.winthing.windows.input.KeyboardKey;
 import com.fatico.winthing.windows.jna.User32;
-
 import com.google.inject.Inject;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
-
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;

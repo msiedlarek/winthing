@@ -1,13 +1,11 @@
 package com.fatico.winthing.systems.desktop;
 
 import com.fatico.winthing.windows.jna.User32;
-
 import com.google.inject.Inject;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.ptr.IntByReference;
-
 import java.util.Objects;
 import java.util.Optional;
 

@@ -1,14 +1,12 @@
 package com.fatico.winthing.systems.radeon;
 
 import com.fatico.winthing.systems.radeon.jna.AtiAdl;
-
 import com.google.common.collect.ComparisonChain;
 import com.google.inject.Inject;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.NoSuchElementException;

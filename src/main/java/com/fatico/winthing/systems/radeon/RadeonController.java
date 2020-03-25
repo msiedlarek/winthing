@@ -3,10 +3,8 @@ package com.fatico.winthing.systems.radeon;
 import com.fatico.winthing.common.BaseController;
 import com.fatico.winthing.messaging.Message;
 import com.fatico.winthing.messaging.Registry;
-
 import com.google.gson.JsonArray;
 import com.google.inject.Inject;
-
 import java.util.NoSuchElementException;
 import java.util.Objects;
 

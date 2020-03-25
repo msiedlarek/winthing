@@ -5,11 +5,9 @@ import com.fatico.winthing.messaging.Message;
 import com.fatico.winthing.messaging.QualityOfService;
 import com.fatico.winthing.messaging.Registry;
 import com.fatico.winthing.windows.SystemException;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import com.google.inject.Inject;
-
 import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Objects;

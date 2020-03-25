@@ -2,7 +2,6 @@ package com.fatico.winthing.windows.input;
 
 import com.google.common.collect.ImmutableSet;
 import com.sun.jna.platform.win32.WinDef;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;

@@ -3,16 +3,14 @@ package com.fatico.winthing.systems.system;
 import com.fatico.winthing.windows.SystemException;
 import com.fatico.winthing.windows.jna.Advapi32;
 import com.fatico.winthing.windows.jna.Kernel32;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
+import com.sun.jna.platform.win32.Kernel32Util;
 import com.sun.jna.platform.win32.Shell32;
+import com.sun.jna.platform.win32.Tlhelp32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.platform.win32.Kernel32Util;
 import com.sun.jna.platform.win32.WinUser;
-import com.sun.jna.platform.win32.Tlhelp32;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

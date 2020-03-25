@@ -2,20 +2,15 @@ package com.fatico.winthing;
 
 import com.fatico.winthing.messaging.MessagingModule;
 import com.fatico.winthing.windows.WindowsModule;
-
 import com.google.gson.Gson;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
 import com.typesafe.config.ConfigSyntax;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.io.File;
 
 public class ApplicationModule extends AbstractModule {

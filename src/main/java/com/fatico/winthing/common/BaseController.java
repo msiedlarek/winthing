@@ -2,12 +2,10 @@ package com.fatico.winthing.common;
 
 import com.fatico.winthing.messaging.Message;
 import com.fatico.winthing.messaging.QualityOfService;
-
 import com.google.gson.JsonElement;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 public class BaseController {
 

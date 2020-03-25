@@ -1,7 +1,6 @@
 package com.fatico.winthing.systems.radeon;
 
 import com.fatico.winthing.systems.radeon.jna.AtiAdl;
-
 import com.google.inject.PrivateModule;
 import com.google.inject.Singleton;
 

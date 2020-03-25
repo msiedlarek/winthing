@@ -2,10 +2,8 @@ package com.fatico.winthing;
 
 import com.fatico.winthing.gui.WindowGui;
 import com.fatico.winthing.messaging.Engine;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
