@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.4.2
+
+- Updated build process and minor security fixes.
+
 ## 1.4.1
 
 - Fix winthing.ini whitelist file and command execution
