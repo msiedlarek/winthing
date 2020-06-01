@@ -25,6 +25,7 @@ Configuration parameters can be passed from command line or they can be placed i
 <tr><td>username</td><td>Username used when connecting to MQTT broker</td><td>mqtt</td></tr>
 <tr><td>password</td><td>Password used when connecting to MQTT broker</td><td>mqtt</td></tr>
 <tr><td>clientid</td><td>Client ID to present to the broker</td><td>WinThing</td></tr>
+<tr><td>prefix</td><td>Prefix for all MQTT topics used by this WinThing instance</td><td>winthing</td></tr>
 <tr><td>reconnect</td><td>Time interval between connection attempts in seconds</td><td>5</td></tr>
 </table>
 
