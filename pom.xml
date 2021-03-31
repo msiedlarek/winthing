@@ -46,7 +46,7 @@
     <checkstyle.config>${project.basedir}/checkstyle.xml</checkstyle.config>
     <version.slf4j>1.7.30</version.slf4j>
     <version.logback>1.2.3</version.logback>
-    <version.guava>28.2-jre</version.guava>
+    <version.guava>29.0-jre</version.guava>
     <version.guice>4.2.3</version.guice>
     <version.gson>2.8.6</version.gson>
     <version.paho>1.2.2</version.paho>
