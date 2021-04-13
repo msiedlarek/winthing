@@ -4,6 +4,10 @@
 
 A modular background service that makes Windows remotely controllable through MQTT. For home automation and Internet of Things.
 
+## :warning: Deprecation Notice :warning:
+
+**WinThing is no longer actively maintained.** As an alternative, please consider [IOT Link](https://iotlink.gitlab.io/), which is actively maintained and has a lot more features, including most of WinThing's features.
+
 ## Requirements
 
 Java 8 or greater.
